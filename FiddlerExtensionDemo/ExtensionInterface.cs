@@ -126,7 +126,9 @@ namespace FiddlerExtensionDemo
             {
                 Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
                 Multiline = true,
-                Enabled = true
+                Enabled = false,
+                BackColor = Color.Black,
+                ForeColor = Color.Green
             };
 
             this.settingPanel.Controls.Add(this.enableCheckBox);

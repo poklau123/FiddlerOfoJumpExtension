@@ -7,30 +7,31 @@ using Newtonsoft.Json;
 
 namespace FiddlerExtensionDemo
 {
+
     class JumperGameResponse
     {
-        public string msg { get; set; }
         public int rt { get; set; }
         public bool success { get; set; }
         public data data { get; set; }
+        public string msg { get; set; }
     }
 
     class data
     {
+        public string info { get; set; }
         public string sign { get; set; }
-        public info info { get; set; }
     }
 
     class info
     {
-        public decimal startTime { get; set; }
+        public long startTime { get; set; }
         public rule rule { get; set; }
     }
 
     class rule
     {
-        public decimal initTime { get; set; }
-        public List<float> xList { get; set; }
+        public long initTime { get; set; }
+        public List<decimal> xList { get; set; }
         public float cWidth { get; set; }
         public float jWidth { get; set; }
     }
@@ -39,8 +40,9 @@ namespace FiddlerExtensionDemo
     {
         public static string ModifyJumpResponse(String trueResponseText)
         {
-            JumperGameResponse res = (JumperGameResponse)JsonConvert.DeserializeObject(trueResponseText);
-            List<float> xList = res.data.info.rule.xList;
+            JumperGameResponse res = JsonConvert.DeserializeObject<JumperGameResponse>(trueResponseText);
+            info info = JsonConvert.DeserializeObject<info>(res.data.info);
+            List<decimal> xList = info.rule.xList;
             int count = xList.Count;
             xList.Clear();
 
@@ -49,11 +51,13 @@ namespace FiddlerExtensionDemo
             {
                 int _base = (i % 3 + 1) * 3;
                 bool is_add = random.Next(1, 10) > 5;
-                int seed = random.Next(1000, 9999);
-                float _r = is_add ? _base + (float)seed / 1000 : _base - (float)seed / 1000;
+                decimal seed = (decimal)random.Next(1000, 9999) / 10000;
+                decimal _r = (is_add ? _base + seed : _base - seed);
 
-                xList.Add(_r);
+                xList.Add((decimal)7.2516);
             }
+
+            res.data.info = JsonConvert.SerializeObject(info);
 
             return JsonConvert.SerializeObject(res);
         }

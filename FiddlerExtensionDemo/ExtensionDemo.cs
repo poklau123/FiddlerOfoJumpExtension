@@ -40,9 +40,11 @@ namespace FiddlerExtensionDemo
                     try
                     {
                         string response = oSession.GetResponseBodyEncoding().GetString(oSession.responseBodyBytes);
-                        this.ui.Log(response);
+                        this.ui.Log("捕获到ofo跳一跳开始游戏请求");
                         string fakerResult = Faker.ModifyJumpResponse(response);
-                        this.ui.Log(fakerResult);
+                        this.ui.Log("faker完成: " + fakerResult);
+                        oSession.ResponseBody = oSession.GetResponseBodyEncoding().GetBytes(new String('\n', 17) + fakerResult);
+                        this.ui.Log("Response修改完成");
                     }
                     catch(Exception e)
                     {
